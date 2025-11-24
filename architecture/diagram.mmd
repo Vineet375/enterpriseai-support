@@ -1,0 +1,22 @@
+flowchart LR
+  U[User] --> ORT[Root Orchestrator Agent]
+  ORT -->|route| TR[Triage Agent]
+  TR -->|billing| BILL[Billing Agent]
+  TR -->|troubleshoot| TRO[Diagnostics Agent]
+  TR -->|escalate| HUMAN[Human-in-loop]
+  BILL --> KB[KB Lookup Tool (JSON/DB)]
+  BILL --> SEARCH[Search Tool (Stub/External)]
+  TRO --> EXEC[Code Execution Tool]
+  ORT --> MEMORY[Session Store + LongTerm Memory]
+  MEMORY -->|retrieve| BILL
+  EXEC --> OBS[Observability / Logs & Traces]
+  KB --> OBS
+  SEARCH --> OBS
+  OBS --> DASH[Metrics / Dashboard]
+  ORT --> EVAL[LLM-as-Judge Evaluation]
+  EVAL --> DASH
+  subgraph A2A
+    TR
+    BILL
+    TRO
+  end
